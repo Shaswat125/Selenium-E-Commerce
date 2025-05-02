@@ -2,5 +2,12 @@
     "home_search_bar":"",
     "elements":"//div[contains(@class,'cPHDOP')]//div[@class='_75nlfW']",
     "url":"https://www.flipkart.com/",
-    "search_box":"//input[contains(@placeholder,'Search for Products')]"
+    "search_box":"//input[contains(@placeholder,'Search for Products')]",
+    "rating4":"//div[contains(text(),'4')]//preceding-sibling::input/parent::label",
+    "rating3":"//div[contains(text(),'3')]//preceding-sibling::input/parent::label",
+    "rating2":"//div[contains(text(),'2')]//preceding-sibling::input/parent::label",
+    "RAM":"//div[contains(text(),'RAM')]/ancestor::section//div[contains(text(), '8 GB')]",
+    "Internal_Storage":"//div[contains(text(),'Internal Storage')]/ancestor::section//div[contains(text(), '256 GB & Above')]",
+    "Primary_camera":"//div[contains(text(),'Primary Camera')]/ancestor::section//div[contains(text(), '64 MP & Above')]",
+    "expand_filter":"//div[text()='Primary Camera']"
 }
