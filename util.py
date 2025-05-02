@@ -10,19 +10,42 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import (
+    NoSuchElementException,
+    ElementClickInterceptedException,
+    TimeoutException,
+    WebDriverException,
+    ElementNotInteractableException,
+    StaleElementReferenceException,
+    JavascriptException,
+    MoveTargetOutOfBoundsException,
+    InvalidSessionIdException
+)
 import os
-os.environ['WDM_LOCAL'] = '1'
 
 def retry_action(max_retries=3, wait_interval=1):
-    """Decorator to retry a selenium action."""
+    """Decorator to retry a selenium action if it fails due to known exceptions."""
     def decorator(func):
         @wraps(func)
         def wrapper(self, *args, **kwargs):
             for attempt in range(1, max_retries + 1):
                 try:
                     return func(self, *args, **kwargs)
+                except (
+                    NoSuchElementException,
+                    ElementClickInterceptedException,
+                    TimeoutException,
+                    WebDriverException,
+                    ElementNotInteractableException,
+                    StaleElementReferenceException,
+                    JavascriptException,
+                    MoveTargetOutOfBoundsException,
+                    InvalidSessionIdException
+                ) as e:
+                    print(f"[Retry {attempt}/{max_retries}] Selenium error in {func.__name__}: {e}")
+                    time.sleep(wait_interval)
                 except Exception as e:
-                    print(f"[Retry {attempt}/{max_retries}] Error in {func.__name__}: {e}")
+                    print(f"[Retry {attempt}/{max_retries}] General error in {func.__name__}: {e}")
                     time.sleep(wait_interval)
             raise Exception(f"{func.__name__} failed after {max_retries} retries.")
         return wrapper
@@ -50,7 +73,6 @@ class SeleniumActions:
 
         # Use cached driver path
         self.driver =webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()),
             options=chrome_options
         )
 
@@ -62,8 +84,11 @@ class SeleniumActions:
         return self
 
     @retry_action()
-    def click(self, xpath):
-        self.driver.find_element(By.XPATH, xpath).click()
+    def click(self, xpath, timeout=10):
+        """Waits for the element to be present and clicks it."""
+        wait = WebDriverWait(self.driver, timeout)
+        element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        element.click()
         return self
 
     @retry_action()
