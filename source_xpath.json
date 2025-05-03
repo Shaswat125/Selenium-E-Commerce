@@ -1,5 +1,4 @@
 {
-    "home_search_bar":"",
     "elements":"//div[contains(@class,'cPHDOP')]//div[@class='_75nlfW']",
     "url":"https://www.flipkart.com/",
     "search_box":"//input[contains(@placeholder,'Search for Products')]",
