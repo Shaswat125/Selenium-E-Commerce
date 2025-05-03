@@ -54,10 +54,7 @@ def retry_action(max_retries=3, wait_interval=1):
 
 class SeleniumActions:
     def __init__(self, driver=None, retries=3, wait_interval=1):
-        # self.driver = driver or webdriver.Chrome(service=Service(ChromeDriverManager().install()))
         self.retries = retries
-        # driver_path = ChromeDriverManager(path=".wdm").install()
-
         chrome_options = Options()
         chrome_options.add_argument("--disable-blink-features=AutomationControlled")
         chrome_options.add_argument("--disable-infobars")
@@ -70,8 +67,6 @@ class SeleniumActions:
         chrome_options.add_argument("--high-dpi-support=1")
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         chrome_options.add_experimental_option('useAutomationExtension', False)
-
-        # Use cached driver path
         self.driver =webdriver.Chrome(
             options=chrome_options
         )
